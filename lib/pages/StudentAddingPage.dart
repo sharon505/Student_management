@@ -71,7 +71,7 @@ class AddStudentDialog extends StatelessWidget {
               name: controllerName.text ?? "",
               bach: controllerBach.text.toUpperCase() ?? '',
               email: controllerEmail.text ?? '',
-              gender: context.read<UiProvider>().gender()
+              gender: hiveController.gender()
           )
       );
       Navigator.pop(context);
