@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:student_management/Provider/UiProvidor.dart';
 import '../Hive/StudentModelClass.dart';
+import '../Provider/GetXState.dart';
 import '../Widgets/Widgets.dart';
+import '../main.dart';
 
 class AddStudentDialog extends StatelessWidget {
   final String? name;
@@ -18,6 +22,10 @@ class AddStudentDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final hiveController = Get.put(GetXStateUIController());
+    final hiveControllerHive = Get.put(GetXStateHiveController());
+
     TextEditingController? controllerName =
         TextEditingController(text: name ?? '');
     TextEditingController? controllerEmail =
@@ -39,7 +47,8 @@ class AddStudentDialog extends StatelessWidget {
           name: controllerName.text ?? "",
           bach: 'BCB${controllerBach.text}' ?? '',
           email: controllerEmail.text ?? '',
-          gender: context.read<UiProvider>().gender()));
+          gender: stateManagement? context.read<UiProvider>().gender() :
+          hiveController.gender()));
       Navigator.pop(context);
       controllerName.clear();
       controllerBach.clear();
@@ -47,7 +56,16 @@ class AddStudentDialog extends StatelessWidget {
     }
 
     void editStudent({int? index}) {
+      stateManagement?
       context.read<HiveProvider>().editByIndex(
+          index!,
+          StudentModelClass(
+              name: controllerName.text ?? "",
+              bach: controllerBach.text.toUpperCase() ?? '',
+              email: controllerEmail.text ?? '',
+              gender: context.read<UiProvider>().gender()
+          )
+      ) : hiveControllerHive.editByIndex(
           index!,
           StudentModelClass(
               name: controllerName.text ?? "",
@@ -130,6 +148,7 @@ class AddStudentDialog extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
+                stateManagement?
                 Consumer<UiProvider>(
                   builder: (BuildContext context, value, Widget? child) {
                     return DropdownButton<String>(
@@ -149,7 +168,22 @@ class AddStudentDialog extends StatelessWidget {
                             .read<UiProvider>()
                             .changeValue(value: newValue!));
                   },
-                ),
+                ) : GetX<GetXStateUIController>(builder: (controller) {
+                  return DropdownButton<String>(
+                      dropdownColor: Colors.grey[800],
+                      iconEnabledColor: Colors.white,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                      value: controller.selectedValue.toString(),
+                      items: dropdownItems.map((String item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) => controller.changeValue(value: newValue!));
+                },),
                 const Spacer(),
                 Row(
                   mainAxisSize: MainAxisSize.min,

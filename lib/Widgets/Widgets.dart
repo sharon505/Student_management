@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
+import 'package:student_management/Hive/StudentModelClass.dart';
 import 'package:student_management/Provider/UiProvidor.dart';
-import 'package:student_management/exe/PageOneSample.dart';
+import 'package:student_management/exe/providerSamplePrograms/PageOneSample.dart';
+
+import '../Provider/GetXState.dart';
+import '../main.dart';
 
 class AppColors {
   static Color scaffoldColor = const Color(0xFF1C1530);
@@ -169,6 +175,7 @@ PreferredSizeWidget searchBar({
   double? width,
   double? textFieldWidth,
 }){
+  final hiveController = Get.put(GetXStateHiveController());
   return PreferredSize(
     preferredSize: const Size.fromHeight(100),
     child: SafeArea(
@@ -182,11 +189,12 @@ PreferredSizeWidget searchBar({
                 style: TextStyle(
                   color: AppColors.whiteColor
                 ),
-                onChanged: (value)=>context.read<HiveProvider>().searchByName(value),
+                onChanged: (value)=> stateManagement? context.read<HiveProvider>().searchByName(value) :
+                hiveController.searchByName(value),
                 decoration: InputDecoration(
                   label: Text("Search",style: TextStyle(color: AppColors.whiteColor),),
                   prefixIcon: Icon(Icons.search,color: AppColors.whiteColor),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))
                   )
                 ),

@@ -6,29 +6,29 @@ import '../Hive/StudentModelClass.dart';
 
 class HiveProvider extends ChangeNotifier{
 
-  final ScrollController _scrollController = ScrollController();
-  ScrollController get scrollController => _scrollController;
-
-  bool _isFabVisible = true;
-  bool get isFabVisible => _isFabVisible;
-
-  HiveProvider() {
-    _scrollController.addListener(_handleScroll);
-  }
-
-  void _handleScroll() {
-    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (_isFabVisible) {
-        _isFabVisible = false;
-        notifyListeners();
-      }
-    } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (!_isFabVisible) {
-        _isFabVisible = true;
-        notifyListeners();
-      }
-    }
-  }
+  // final ScrollController _scrollController = ScrollController();
+  // ScrollController get scrollController => _scrollController;
+  //
+  // bool _isFabVisible = true;
+  // bool get isFabVisible => _isFabVisible;
+  //
+  // HiveProvider() {
+  //   _scrollController.addListener(_handleScroll);
+  // }
+  //
+  // void _handleScroll() {
+  //   if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+  //     if (_isFabVisible) {
+  //       _isFabVisible = false;
+  //       notifyListeners();
+  //     }
+  //   } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+  //     if (!_isFabVisible) {
+  //       _isFabVisible = true;
+  //       notifyListeners();
+  //     }
+  //   }
+  // }
 
   final Box<StudentModelClass> userBox = Hive.box<StudentModelClass>('userBox');
 

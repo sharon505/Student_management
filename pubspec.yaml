@@ -38,6 +38,7 @@ dependencies:
   hive_flutter:
   hive_generator:
   provider: ^6.1.2
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
